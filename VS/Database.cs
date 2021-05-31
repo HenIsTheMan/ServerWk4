@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Data;
 
 namespace ServerWk3 {
 	class Database {
@@ -15,12 +16,17 @@ namespace ServerWk3 {
 			conn.Close();
 		}
 
-		public void Query(string query) {
+		public DataTable Query(string query) {
+			DataTable results = null;
+
 			try {
 				using(MySqlCommand cmd = new MySqlCommand(query, conn)) {
+					results = new DataTable();
+					results.Load(cmd.ExecuteReader());
+
 					using(MySqlDataReader reader = cmd.ExecuteReader()) {
 						if(!reader.HasRows) {
-							return;
+							return results;
 						}
 
 						int i;
@@ -41,6 +47,8 @@ namespace ServerWk3 {
 			} catch(Exception e) {
 				Console.WriteLine(e.ToString());
 			}
+
+			return results;
 		}
 	}
 }

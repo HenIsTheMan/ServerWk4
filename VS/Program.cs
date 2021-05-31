@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 
 namespace ServerWk3 {
 	class Program {
@@ -7,9 +8,21 @@ namespace ServerWk3 {
 
 			db.Connect("localhost", 3306, "test_db", "root", "password");
 
+			DataTable results = db.Query("SELECT * FROM students");
+			Console.Write('\n');
+			Console.Write(results.Rows.Count);
+			Console.Write("\n\n");
+			foreach(DataRow row in results.Rows) {
+				Console.WriteLine("{0}, {1}, {2}", row["id"], row["firstName"], row["lastName"]);
+			}
+			Console.Write('\n');
+
+			goto endingPart;
+
 			//just "class" can here
 
 			//db.Query("INSERT INTO test_db.class (id, name) VALUES (7, \"Yes\");");
+			//INSERT INTO `test_db`.`students` (`id`, `firstName`, `lastName`) VALUES ('3', 'ho', 'ho');
 
 			db.Query("UPDATE test_db.class SET name = 'Yup'");
 
@@ -37,6 +50,8 @@ namespace ServerWk3 {
 				Console.WriteLine("\n\n");
 			}
 
+			endingPart:
+
 			//Console.WriteLine("\n\nPress the Enter key to continue...");
 			//Console.ReadLine();
 
@@ -44,6 +59,8 @@ namespace ServerWk3 {
 			Console.ReadKey();
 
 			//System.Threading.Thread.Sleep(1000);
+
+			db.Disconnect();
 		}
 	}
 }
