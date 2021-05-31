@@ -88,7 +88,7 @@ namespace MyFirstPlugin {
 					break;
 				}
 				case 2: {
-					string firstNameOfStudent = Encoding.Default.GetString((byte[])info.Request.Data);
+					string firstNameOfStudent = (string)info.Request.Data;
 					DataTable dt = db.Query("SELECT * FROM students");
 					List<Student> students = DataTableToList<Student>(dt);
 					int studentCount = students.Count;

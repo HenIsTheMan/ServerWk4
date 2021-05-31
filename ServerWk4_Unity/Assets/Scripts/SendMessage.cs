@@ -1,5 +1,4 @@
-﻿using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
@@ -11,10 +10,8 @@ public class SendMessage: MonoBehaviour {
         if (PhotonNetwork.IsConnected)
         {
             PhotonNetwork.RaiseEvent(1, null, RaiseEventOptions.Default, SendOptions.SendReliable);
-
-            string firstNameOfStudent = "ho";
-            byte[] content = Encoding.Default.GetBytes(firstNameOfStudent);
-            PhotonNetwork.RaiseEvent(2, content, RaiseEventOptions.Default, SendOptions.SendReliable);
+            PhotonNetwork.RaiseEvent(2, "ok", RaiseEventOptions.Default, SendOptions.SendReliable);
+            PhotonNetwork.RaiseEvent(2, "Ok", RaiseEventOptions.Default, SendOptions.SendReliable);
         }
     }
 }
