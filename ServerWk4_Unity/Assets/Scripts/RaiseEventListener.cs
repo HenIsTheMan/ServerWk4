@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 using ExitGames.Client.Photon;
 using Photon.Pun;
 
@@ -19,6 +16,6 @@ public class RaiseEventListener: MonoBehaviourPun
 
     private void OnEvent(EventData obj)
     {
-        Debug.Log("OnEvent: " + (string)obj.CustomData);
+        Debug.Log("OnEvent (code: " + obj.Code + "): " + (string)obj.CustomData);
     }
 }
