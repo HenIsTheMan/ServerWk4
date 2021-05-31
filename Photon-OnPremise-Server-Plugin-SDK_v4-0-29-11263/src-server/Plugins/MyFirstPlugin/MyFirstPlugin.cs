@@ -32,10 +32,11 @@ namespace MyFirstPlugin {
 			T obj = Activator.CreateInstance<T>();
 			foreach(DataColumn column in dr.Table.Columns) {
 				foreach(PropertyInfo pro in temp.GetProperties()) {
-					if(pro.Name == column.ColumnName)
-						pro.SetValue(obj, dr[column.ColumnName], null);
-					else
+					if(pro.Name != column.ColumnName) {
 						continue;
+					}
+
+					pro.SetValue(obj, dr[column.ColumnName], null);
 				}
 			}
 			return obj;
