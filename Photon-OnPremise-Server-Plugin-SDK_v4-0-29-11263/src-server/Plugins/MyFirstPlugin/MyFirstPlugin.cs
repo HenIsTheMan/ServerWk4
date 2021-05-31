@@ -1,9 +1,23 @@
 ﻿using Photon.Hive.Plugin;
 using System.Collections.Generic;
 using System.Text;
+using System.Data;
+using System.Reflection;
+using Newtonsoft.Json;
+//??
 
 namespace MyFirstPlugin {
     public class MyFirstPlugin: PluginBase {
+		Database db = new Database();
+
+		public MyFirstPlugin() {
+			db.Connect("localhost", 3306, "test_db", "root", "password");
+		}
+
+		~MyFirstPlugin() {
+			db.Disconnect();
+		}
+
 		public override string Name => "MyFirstPlugin"; //The reserved plugin names are "Default" and "ErrorPlugin"
 
 		//private IPluginLogger pluginLogger;
