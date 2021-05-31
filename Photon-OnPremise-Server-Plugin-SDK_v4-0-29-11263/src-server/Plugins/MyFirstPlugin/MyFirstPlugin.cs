@@ -59,29 +59,58 @@ namespace MyFirstPlugin {
 
 		public override void OnRaiseEvent(IRaiseEventCallInfo info) {
 			base.OnRaiseEvent(info);
-			if(info.Request.EvCode == 1) {
-				/*string request = Encoding.Default.GetString((byte[])info.Request.Data);
-				string response = "Message Received: " + request;
-				PluginHost.BroadcastEvent(
-					target: ReciverGroup.All,
-					senderActor: 0,
-					targetGroup: 0,
-					data: new Dictionary<byte, object>() { { 245, response } },
-					evCode: info.Request.EvCode,
-					cacheOp: 0
-				);*/
 
-				DataTable dt = db.Query("SELECT * FROM students");
-				List<Student> students = DataTableToList<Student>(dt);
-				string response = string.Format("{0}",
-				JsonConvert.SerializeObject(students));
-				this.PluginHost.BroadcastEvent(
-					recieverActors: new List<int>() { info.ActorNr },
-					senderActor: 0,
-					data: new Dictionary<byte, object>() { { (byte)245, response } },
-					evCode: info.Request.EvCode,
-					cacheOp: 0
-				);
+			switch(info.Request.EvCode){
+				case 1: {
+					/*string request = Encoding.Default.GetString((byte[])info.Request.Data);
+					string response = "Message Received: " + request;
+					PluginHost.BroadcastEvent(
+						target: ReciverGroup.All,
+						senderActor: 0,
+						targetGroup: 0,
+						data: new Dictionary<byte, object>() { { 245, response } },
+						evCode: info.Request.EvCode,
+						cacheOp: 0
+					);*/
+
+					DataTable dt = db.Query("SELECT * FROM students");
+					List<Student> students = DataTableToList<Student>(dt);
+					string response = string.Format("{0}", JsonConvert.SerializeObject(students));
+
+					PluginHost.BroadcastEvent(
+						recieverActors: new List<int>() { info.ActorNr },
+						senderActor: 0,
+						data: new Dictionary<byte, object>() { { 245, response } },
+						evCode: info.Request.EvCode,
+						cacheOp: CacheOperations.DoNotCache
+					);
+
+					break;
+				}
+				case 2: {
+					string firstNameOfStudent = Encoding.Default.GetString((byte[])info.Request.Data);
+					DataTable dt = db.Query("SELECT * FROM students");
+					List<Student> students = DataTableToList<Student>(dt);
+					int studentCount = students.Count;
+
+					bool isStudentPresent = false;
+					for(int i = 0; i < studentCount; ++i) {
+						if(students[i].firstName == firstNameOfStudent) {
+							isStudentPresent = true;
+							break;
+						}
+					}
+
+					PluginHost.BroadcastEvent(
+						recieverActors: new List<int>() { info.ActorNr },
+						senderActor: 0,
+						data: new Dictionary<byte, object>() { { 245, "Student with first name of \"" + firstNameOfStudent + (isStudentPresent ? "\" is enrolled." : "\" is not enrolled.") } },
+						evCode: info.Request.EvCode,
+						cacheOp: CacheOperations.DoNotCache
+					);
+
+					break;
+				}
 			}
 		}
 	}

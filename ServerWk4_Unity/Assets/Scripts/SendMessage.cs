@@ -10,9 +10,11 @@ public class SendMessage: MonoBehaviour {
         // we check if we are connected or not, we join if we are , else we initiate the connection to the server.
         if (PhotonNetwork.IsConnected)
         {
-            string message = "Hello World";
-            byte[] content = Encoding.Default.GetBytes(message);
-            PhotonNetwork.RaiseEvent(1, content, RaiseEventOptions.Default, SendOptions.SendReliable);
+            PhotonNetwork.RaiseEvent(1, null, RaiseEventOptions.Default, SendOptions.SendReliable);
+
+            string firstNameOfStudent = "ho";
+            byte[] content = Encoding.Default.GetBytes(firstNameOfStudent);
+            PhotonNetwork.RaiseEvent(2, content, RaiseEventOptions.Default, SendOptions.SendReliable);
         }
     }
 }
