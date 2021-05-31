@@ -59,15 +59,27 @@ namespace MyFirstPlugin {
 		public override void OnRaiseEvent(IRaiseEventCallInfo info) {
 			base.OnRaiseEvent(info);
 			if(info.Request.EvCode == 1) {
-				string request = Encoding.Default.GetString((byte[])info.Request.Data);
+				/*string request = Encoding.Default.GetString((byte[])info.Request.Data);
 				string response = "Message Received: " + request;
 				PluginHost.BroadcastEvent(
-				target: ReciverGroup.All,
-				senderActor: 0,
-				targetGroup: 0,
-				data: new Dictionary<byte, object>() { { 245, response } },
-				evCode: info.Request.EvCode,
-				cacheOp: 0
+					target: ReciverGroup.All,
+					senderActor: 0,
+					targetGroup: 0,
+					data: new Dictionary<byte, object>() { { 245, response } },
+					evCode: info.Request.EvCode,
+					cacheOp: 0
+				);*/
+
+				DataTable dt = db.Query("SELECT * FROM students");
+				List<Student> students = DataTableToList<Student>(dt);
+				string response = string.Format("{0}",
+				JsonConvert.SerializeObject(students));
+				this.PluginHost.BroadcastEvent(
+					recieverActors: new List<int>() { info.ActorNr },
+					senderActor: 0,
+					data: new Dictionary<byte, object>() { { (byte)245, response } },
+					evCode: info.Request.EvCode,
+					cacheOp: 0
 				);
 			}
 		}
