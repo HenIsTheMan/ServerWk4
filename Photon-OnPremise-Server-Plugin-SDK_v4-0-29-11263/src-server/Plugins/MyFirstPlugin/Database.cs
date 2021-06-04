@@ -16,15 +16,42 @@ namespace MyFirstPlugin {
 			conn.Close();
 		}
 
+		public DataTable MyQuery(string query) {
+			using(MySqlCommand cmd = new MySqlCommand(query, conn)) {
+				using(MySqlDataReader reader = cmd.ExecuteReader()) {
+					if(!reader.HasRows) {
+						return null;
+					}
+
+					int i;
+					int fieldCount = reader.FieldCount;
+					string text;
+
+					while(reader.Read()) {
+						text = string.Empty;
+
+						for(i = 0; i < fieldCount; ++i) {
+							text += reader[i] + (i == fieldCount - 1 ? "" : ", ");
+						}
+
+						Console.WriteLine(text);
+					}
+				}
+
+				return null;
+			}
+		}
+
 		public DataTable Query(string query) {
 			DataTable results = null;
 
 			try {
 				using(MySqlCommand cmd = new MySqlCommand(query, conn)) {
 					results = new DataTable();
-					results.Load(cmd.ExecuteReader());
 
 					using(MySqlDataReader reader = cmd.ExecuteReader()) {
+						results.Load(reader);
+
 						if(!reader.HasRows) {
 							return results;
 						}

@@ -73,22 +73,24 @@ namespace MyFirstPlugin {
 						cacheOp: 0
 					);*/
 
-					DataTable dt = db.Query("SELECT * FROM students");
-					List<Student> students = DataTableToList<Student>(dt);
-					string response = string.Format("{0}", JsonConvert.SerializeObject(students));
+					//DataTable dt = db.Query("SELECT * FROM students");
+					//List<Student> students = DataTableToList<Student>(dt);
+					//string response = string.Format("{0}", JsonConvert.SerializeObject(students));
 
-					PluginHost.BroadcastEvent(
-						recieverActors: new List<int>() { info.ActorNr },
-						senderActor: 0,
-						data: new Dictionary<byte, object>() { { 245, response } },
-						evCode: info.Request.EvCode,
-						cacheOp: CacheOperations.DoNotCache
-					);
+					//PluginHost.BroadcastEvent(
+					//	recieverActors: new List<int>() { info.ActorNr },
+					//	senderActor: 0,
+					//	data: new Dictionary<byte, object>() { { 245, response } },
+					//	evCode: info.Request.EvCode,
+					//	cacheOp: CacheOperations.DoNotCache
+					//);
 
 					break;
 				}
 				case 2: {
-					string firstNameOfStudent = (string)info.Request.Data;
+					db.Query("INSERT INTO test_db.enrolment (student_id, class_id) VALUES (1, 1);");
+
+					/*string firstNameOfStudent = (string)info.Request.Data;
 					DataTable dt = db.Query("SELECT * FROM students");
 					List<Student> students = DataTableToList<Student>(dt);
 					int studentCount = students.Count;
@@ -107,7 +109,7 @@ namespace MyFirstPlugin {
 						data: new Dictionary<byte, object>() { { 245, "Student with first name of \"" + firstNameOfStudent + (isStudentPresent ? "\" is enrolled." : "\" is not enrolled.") } },
 						evCode: info.Request.EvCode,
 						cacheOp: CacheOperations.DoNotCache
-					);
+					);*/
 
 					break;
 				}
